@@ -151,44 +151,44 @@
                     </div>
                     <div class="modal-body">
                       <form id="form-validate-edit" class="needs-validation" novalidate >
-                      <input type="hidden" value="0" id="id" name="id">
+                      <input type="hidden"  id="idEdit" name="idEdit">
                       <?php 
 				                ?>
                           <div class="row mb-3">
-                            <label for="name" class="col-sm-4 col-form-label">Name. <font color="#FF0000">*</font></label>
+                            <label for="nameEdit" class="col-sm-4 col-form-label">Name. <font color="#FF0000">*</font></label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="name" required name="name" title="Enter Name." minlength="1" maxlength="20">
+                              <input type="text" class="form-control" id="nameEdit" required name="nameEdit" title="Enter Name." minlength="1" maxlength="20">
                               <div class="invalid-feedback">Name is required.</div>
                             </div>
                           </div>
                           
                           <div class="row mb-3">
-                            <label for="organization" class="col-sm-4 col-form-label">Organization<font color="#FF0000">*</font></label>
+                            <label for="organizationEdit" class="col-sm-4 col-form-label">Organization<font color="#FF0000">*</font></label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="organization"  required name="organization" title="Enter organization" minlength="3" maxlength="50">
+                              <input type="text" class="form-control" id="organizationEdit"  required name="organizationEdit" title="Enter organization" minlength="3" maxlength="50">
                               <div class="invalid-feedback">Organization is required.</div>
                             </div>
                           </div>
                           
                           <div class="row mb-3">
-                            <label for="designation" class="col-sm-4 col-form-label">Designation <font color="#FF0000">*</font></label>
+                            <label for="designationEdit" class="col-sm-4 col-form-label">Designation <font color="#FF0000">*</font></label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="designation"  required name="designation" title="Enter Designation" minlength="3" maxlength="50">
+                              <input type="text" class="form-control" id="designationEdit"  required name="designationEdit" title="Enter Designation" minlength="3" maxlength="50">
                               <div class="invalid-feedback">Designation is required.</div>
                             </div>
                           </div>
                           
                           <div class="row mb-3">
-                            <label for="email" class="col-sm-4 col-form-label">Official mail <font color="#FF0000">*</font></label>
+                            <label for="mailEdit" class="col-sm-4 col-form-label">Official mail <font color="#FF0000">*</font></label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="email"  required name="email" title="Enter email" minlength="3" maxlength="20">
+                              <input type="text" class="form-control" id="mailEdit"  required name="mailEdit" title="Enter email" minlength="3" maxlength="20">
                               <div class="invalid-feedback">Email is required.</div>
                             </div>
                           </div>
                           <div class="row mb-3">
-                            <label for="mobile" class="col-sm-4 col-form-label">Mobile<font color="#FF0000">*</font></label>
+                            <label for="phoneEdit" class="col-sm-4 col-form-label">Mobile<font color="#FF0000">*</font></label>
                             <div class="col-sm-8">
-                              <input type="text" class="form-control" id="mobile"  required name="mobile" title="Enter mobile" minlength="10" maxlength="10">
+                              <input type="text" class="form-control" id="phoneEdit"  required name="phoneEdit" title="Enter mobile" minlength="10" maxlength="10">
                               <div class="invalid-feedback">Mobile is required.</div>
                             </div>
                           </div>
@@ -304,14 +304,6 @@ $('#form-validate').on('submit', function(event) {
             } else {
                 $('#mail').removeClass('is-invalid');
             }
-            // var mobile = $('#phone').val();
-            // if (!isValidMobile(mobile)) {
-            //     $('#phone').addClass('is-invalid');
-            //     $('#phone').siblings('.invalid-feedback').text('Enter Mobile Number.');
-            //     isValid = false;
-            // } else {
-            //     $('#phone').removeClass('is-invalid');
-            // }
             if (!isValid) {
                 event.preventDefault();
             }
@@ -347,36 +339,106 @@ $('#form-validate').on('submit', function(event) {
         });
     }
 $('.editButton').on('click', function() {
+     //alert('God is Love');
             var id = $(this).data('id');
             var name = $(this).data('name');
             var organization = $(this).data('organization');
             var designation = $(this).data('designation');
             var email = $(this).data('email');
             var mobile = $(this).data('mobile');
-            $('#editModal #id').val(id);
-            $('#editModal #name').val(name);
-            $('#editModal #organization').val(organization);
-            $('#editModal #designation').val(designation);
-            $('#editModal #email').val(email);
-            $('#editModal #mobile').val(mobile);
+            $('#editModal #idEdit').val(id);
+            $('#editModal #nameEdit').val(name);
+            $('#editModal #organizationEdit').val(organization);
+            $('#editModal #designationEdit').val(designation);
+            $('#editModal #mailEdit').val(email);
+            $('#editModal #phoneEdit').val(mobile);
         });
         
 
         $('#form-validate-edit').on('submit', function(event) {
             event.preventDefault();
+            if(validateFormEdit()) {
             $.ajax({
                 url: '<?= base_url('update-member') ?>',
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    $('#editModal').modal('hide');
+                    // $('#editModal').modal('hide');
                     window.location.reload();
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
                 }
             });
+          }
         });
+
+        function validateFormEdit() {
+        var isValid = true;
+        var name = $('#nameEdit').val().trim();
+        if (name === '') {
+            isValid = false;
+            $('#nameEdit').addClass('is-invalid');
+            $('#nameEdit').siblings('.invalid-feedback').text('Name is required.');
+        } else if (!isValidName(name)) {
+            isValid = false;
+            $('#nameEdit').addClass('is-invalid').siblings('.invalid-feedback').text('Name can only contain letters.');
+        }
+        else {
+            $('#nameEdit').removeClass('is-invalid');
+            $('#nameEdit').siblings('.invalid-feedback').text('');
+        }
+        if ($('#organizationEdit').val().trim() === '') {
+            isValid = false;
+            $('#organizationEdit').addClass('is-invalid');
+            $('#organizationEdit').siblings('.invalid-feedback').text('organization is required.');
+        } else {
+            $('#organizationEdit').removeClass('is-invalid');
+            $('#organizationEdit').siblings('.invalid-feedback').text('');
+        }
+        if ($('#designationEdit').val().trim() === '') {
+            isValid = false;
+            $('#designationEdit').addClass('is-invalid');
+            $('#designationEdit').siblings('.invalid-feedback').text('designation is required.');
+        } else {
+            $('#designationEdit').removeClass('is-invalid');
+            $('#designationEdit').siblings('.invalid-feedback').text('');
+        }
+        if ($('#mailEdit').val().trim() === '') {
+            isValid = false;
+            $('#mailEdit').addClass('is-invalid');
+            $('#mailEdit').siblings('.invalid-feedback').text('mail is required.');
+        } else {
+            $('#mailEdit').removeClass('is-invalid');
+            $('#mailEdit').siblings('.invalid-feedback').text('');
+        }
+        var phone = $('#phoneEdit').val().trim();
+        if (phone === '') {
+            isValid = false;
+            $('#phoneEdit').addClass('is-invalid');
+            $('#phoneEdit').siblings('.invalid-feedback').text('mobile is required.');
+        }
+        else if (!isValidMobile(phone)) {
+            isValid = false;
+            $('#phoneEdit').addClass('is-invalid').siblings('.invalid-feedback').text('Mobile Number should be 10 digits.');
+        }
+         else {
+            $('#phoneEdit').removeClass('is-invalid');
+            $('#phoneEdit').siblings('.invalid-feedback').text('');
+        }
+        var email = $('#mailEdit').val();
+            if (!isValidEmail(email)) {
+                $('#mailEdit').addClass('is-invalid');
+                $('#mailEdit').siblings('.invalid-feedback').text('Enter valid Email.');
+                isValid = false;
+            } else {
+                $('#mailEdit').removeClass('is-invalid');
+            }
+            if (!isValid) {
+                event.preventDefault();
+            }
+            return isValid;
+    }
     
 
         
@@ -417,23 +479,32 @@ $('.editButton').on('click', function() {
                 '<td>' + member.email + '</td>' +
                 '<td>' + member.mobile + '</td>' +
                 '<td>' +
-                '<button type="button" title="Edit" class="btn btn-outline-primary btn-sm editButton" data-bs-toggle="modal" data-bs-target="#editModal" data-id="' + member.id + '" data-name="' + member.name + '" data-organization="' + member.organization + '" data-designation="' + member.designation + '" data-email="' + member.email + '" data-mobile="' + member.mobile + '">' +
+                '<button type="button" title="Edit" class="btn btn-outline-primary btn-sm editButtonFilter" data-bs-toggle="modal" data-bs-target="#editModal" data-id="' + member.id + '" data-name="' + member.name + '" data-organization="' + member.organization + '" data-designation="' + member.designation + '" data-mail="' + member.email + '" data-phone="' + member.mobile + '">' +
                 '<i class="fa fa-pencil"></i>' +
                 '</button>' +
                 '</td>' +
                 '</tr>';
-            
-            $('#tablelist tbody').append(row);
+             $('#tablelist tbody').append(row);
         });
     }
 
-
-
-
-
-
-
 });
 
+$(document).on('click', '.editButtonFilter', function() {
+    var id = $(this).data('id');
+    var name = $(this).data('name');
+    var organization = $(this).data('organization');
+    var designation = $(this).data('designation');
+    var email = $(this).data('mail');
+    var mobile = $(this).data('phone');
+
+    // Set values in the edit modal inputs
+    $('#editModal #idEdit').val(id);
+    $('#editModal #nameEdit').val(name);
+    $('#editModal #organizationEdit').val(organization);
+    $('#editModal #designationEdit').val(designation);
+    $('#editModal #mailEdit').val(email);
+    $('#editModal #phoneEdit').val(mobile);
+});
 </script>
 <?=$this->endSection();?>

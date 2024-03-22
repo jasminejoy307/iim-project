@@ -66,13 +66,13 @@ class MemberController extends Controller
     }
 
     public function updateMembers(){
-        $id = $this->request->getPost('id');
+        $id = $this->request->getPost('idEdit');
         $data = [
-            'name' => $this->request->getPost('name'),
-            'organization' => $this->request->getPost('organization'),
-            'designation' => $this->request->getPost('designation'),
-            'email' => $this->request->getPost('email'),
-            'mobile' => $this->request->getPost('mobile')
+            'name' => $this->request->getPost('nameEdit'),
+            'organization' => $this->request->getPost('organizationEdit'),
+            'designation' => $this->request->getPost('designationEdit'),
+            'email' => $this->request->getPost('mailEdit'),
+            'mobile' => $this->request->getPost('phoneEdit')
         ];
         $model = new MemberModel();
         $model->update($id, $data);
