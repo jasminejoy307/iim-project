@@ -35,20 +35,26 @@ class MemberController extends Controller
 
         $model = new MemberModel();
         $lastUrno = $model->selectMax('urn_no')->first();
-        $newUrno = intval($lastUrno['urn_no']) + 1;
-        $data = [
+        $lastUrno = $model->selectMax('urn_no')->first();
+        if ($lastUrno === null) {
+            $newUrno = '2024001';
+        } else {
+            $lastUrnoWithoutPrefix = intval(substr($lastUrno['urn_no'], 4)); 
+            $newUrno = '2024' . str_pad($lastUrnoWithoutPrefix + 1, 3, '0', STR_PAD_LEFT); 
+        }
+         $data = [
             'name' => $this->request->getPost('name'),
             'organization' => $this->request->getPost('organization'),
             'designation' => $this->request->getPost('designation'),
             'email' => $this->request->getPost('mail'),
-            'urn_no' => strval($newUrno),
+            'urn_no' =>  $newUrno,
             'password' => '123',
             'mobile' => $this->request->getPost('mobile')
         ];
 
         $model->insert($data);
 
-        return $this->response->setJSON(['success' => true]);
+        return $this->response->setJSON(['success' => true,$data]);
     }
 
     public function searchMembers()

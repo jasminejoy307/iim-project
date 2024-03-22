@@ -60,7 +60,7 @@ class Auth extends Controller
                 if ($user && md5($this->request->getVar('password')) === $user['password']) {
                     // Set session and redirect to dashboard or home page
                     // echo 'God is Love';
-                    return redirect()->to('/dashboard');
+                    return redirect()->to('dashboard');
                 } else {
                     $data['error'] = 'Invalid email or password';
                 }

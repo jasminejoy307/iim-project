@@ -32,6 +32,7 @@
         <input type="text" id="mobile" name="mobile" placeholder="Search by Mobile">
         <button type="submit" id="searchButton" class="btn btn-primary">Search</button>
     </form>
+    
                     <div class="card-body">
                         <table id="tablelist" class="table card-table table-hover align-middle mb-0">
                             <thead>
@@ -330,7 +331,7 @@ $('#form-validate').on('submit', function(event) {
             method: 'POST',
             data: $('#form-validate').serialize(), 
             success: function(response) {
-               // alert("Success");
+                //alert("Success");
                 window.location.reload();
                 },
             error: function(xhr, status, error) {
